@@ -68,6 +68,17 @@ echo "pip install -r source/image-handler/requirements.txt --target=$VIRTUAL_ENV
 pip install -r source/image-handler/requirements.txt --target=$VIRTUAL_ENV/lib/python2.7/site-packages/
 cd $VIRTUAL_ENV
 pwd
+curl http://www.ijg.org/files/jpegsrc.v6b.tar.gz > /tmp/libjpeg.tar.gz
+tar -xzvf /tmp/libjpeg.tar.gz
+cd /tmp/jpeg-6b
+./configure
+make install
+echo "cp jpegtran $VIRTUAL_ENV"
+cp -f jpegtran $VIRTUAL_ENV
+cd $VIRTUAL_ENV/lib/python2.7/site-packages
+pwd
+cd $VIRTUAL_ENV
+pwd
 echo "git clone git://github.com/pornel/pngquant.git pngquant_s"
 git clone git://github.com/pornel/pngquant.git pngquant_s
 cd pngquant_s
