@@ -35,8 +35,9 @@ echo "Updating code source bucket in template with $1"
 replace="s/%%BUCKET_NAME%%/$1/g"
 echo "sed -i '' -e $replace dist/serverless-image-handler.template"
 sed -i '' -e $replace dist/serverless-image-handler.template
-
-
+echo "Creating UI ZIP file"
+cd $deployment_dir/../source/ui
+zip -q -r9 $deployment_dir/dist/serverless-image-handler-ui.zip *
 echo "Building custom resource package ZIP file"
 cd $deployment_dir/dist
 pwd
@@ -52,7 +53,6 @@ cd $deployment_dir/dist
 zip -q -d serverless-image-handler-custom-resource.zip pip*
 zip -q -d serverless-image-handler-custom-resource.zip easy*
 rm -rf env
-
 echo "Building Image Handler package ZIP file"
 cd $deployment_dir/dist
 pwd
@@ -66,17 +66,6 @@ echo "pip install source/image-handler/. --target=$VIRTUAL_ENV/lib/python2.7/sit
 pip install source/image-handler/. --target=$VIRTUAL_ENV/lib/python2.7/site-packages/
 echo "pip install -r source/image-handler/requirements.txt --target=$VIRTUAL_ENV/lib/python2.7/site-packages/"
 pip install -r source/image-handler/requirements.txt --target=$VIRTUAL_ENV/lib/python2.7/site-packages/
-cd $VIRTUAL_ENV
-pwd
-curl http://www.ijg.org/files/jpegsrc.v6b.tar.gz > /tmp/libjpeg.tar.gz
-tar -xzvf /tmp/libjpeg.tar.gz
-cd /tmp/jpeg-6b
-./configure
-make install
-echo "cp jpegtran $VIRTUAL_ENV"
-cp -f jpegtran $VIRTUAL_ENV
-cd $VIRTUAL_ENV/lib/python2.7/site-packages
-pwd
 cd $VIRTUAL_ENV
 pwd
 echo "git clone git://github.com/pornel/pngquant.git pngquant_s"
@@ -98,6 +87,8 @@ pwd
 echo "zip -q -g $VIRTUAL_ENV/../serverless-image-handler.zip pngquant"
 zip -q -g $VIRTUAL_ENV/../serverless-image-handler.zip pngquant
 cd ..
+pwd
+zip -ur $deployment_dir/dist/serverless-image-handler.zip jpegtran
 zip -q -d serverless-image-handler.zip pip*
 zip -q -d serverless-image-handler.zip easy*
 echo "Clean up build material"
