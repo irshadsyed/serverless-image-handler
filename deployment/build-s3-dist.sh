@@ -35,9 +35,8 @@ echo "Updating code source bucket in template with $1"
 replace="s/%%BUCKET_NAME%%/$1/g"
 echo "sed -i '' -e $replace dist/serverless-image-handler.template"
 sed -i '' -e $replace dist/serverless-image-handler.template
-echo "Creating UI ZIP file"
-cd $deployment_dir/../source/ui
-zip -q -r9 $deployment_dir/dist/serverless-image-handler-ui.zip *
+
+
 echo "Building custom resource package ZIP file"
 cd $deployment_dir/dist
 pwd
@@ -53,6 +52,7 @@ cd $deployment_dir/dist
 zip -q -d serverless-image-handler-custom-resource.zip pip*
 zip -q -d serverless-image-handler-custom-resource.zip easy*
 rm -rf env
+
 echo "Building Image Handler package ZIP file"
 cd $deployment_dir/dist
 pwd
