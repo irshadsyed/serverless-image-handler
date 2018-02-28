@@ -1,0 +1,16 @@
+
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                node('default') {
+				git clone https://github.com/irshadsyed/serverless-image-handler.git
+				sh cd deployment
+				sh ./build-s3-dist.sh source-bucket-base-name
+                }
+            }
+        }
+    }
+    
+ }       
